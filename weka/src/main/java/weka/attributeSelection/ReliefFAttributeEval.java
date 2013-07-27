@@ -21,23 +21,14 @@
 
 package weka.attributeSelection;
 
+import weka.core.*;
+import weka.core.Capabilities.Capability;
+import weka.core.TechnicalInformation.Field;
+import weka.core.TechnicalInformation.Type;
+
 import java.util.Enumeration;
 import java.util.Random;
 import java.util.Vector;
-
-import weka.core.Attribute;
-import weka.core.Capabilities;
-import weka.core.Capabilities.Capability;
-import weka.core.Instance;
-import weka.core.Instances;
-import weka.core.Option;
-import weka.core.OptionHandler;
-import weka.core.RevisionUtils;
-import weka.core.TechnicalInformation;
-import weka.core.TechnicalInformation.Field;
-import weka.core.TechnicalInformation.Type;
-import weka.core.TechnicalInformationHandler;
-import weka.core.Utils;
 
 /** 
  <!-- globalinfo-start -->
@@ -723,6 +714,10 @@ public class ReliefFAttributeEval
 
     // process each instance, updating attribute weights
     for (int i = 0; i < totalInstances; i++) {
+        if (Thread.interrupted()) {
+            throw new InterruptedException("Interrupted during attribute selection.");
+        }
+
       if (totalInstances == m_numInstances) {
         z = i;
       }

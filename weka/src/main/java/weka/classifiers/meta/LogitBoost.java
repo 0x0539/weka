@@ -21,28 +21,15 @@
 
 package weka.classifiers.meta;
 
+import weka.classifiers.*;
+import weka.core.*;
+import weka.core.Capabilities.Capability;
+import weka.core.TechnicalInformation.Field;
+import weka.core.TechnicalInformation.Type;
+
 import java.util.Enumeration;
 import java.util.Random;
 import java.util.Vector;
-
-import weka.classifiers.AbstractClassifier;
-import weka.classifiers.Classifier;
-import weka.classifiers.Evaluation;
-import weka.classifiers.RandomizableIteratedSingleClassifierEnhancer;
-import weka.classifiers.Sourcable;
-import weka.core.Attribute;
-import weka.core.Capabilities;
-import weka.core.Capabilities.Capability;
-import weka.core.Instance;
-import weka.core.Instances;
-import weka.core.Option;
-import weka.core.RevisionUtils;
-import weka.core.TechnicalInformation;
-import weka.core.TechnicalInformation.Field;
-import weka.core.TechnicalInformation.Type;
-import weka.core.TechnicalInformationHandler;
-import weka.core.Utils;
-import weka.core.WeightedInstancesHandler;
 
 /**
  <!-- globalinfo-start -->
@@ -756,6 +743,9 @@ public class LogitBoost
 	  m_NumGenerated = 0;
 	  double sumOfWeights = train.sumOfWeights();
 	  for (int j = 0; j < getNumIterations(); j++) {
+          if (Thread.interrupted()) {
+              throw new InterruptedException("Thread interrupted during training.");
+          }
 	    performIteration(trainYs, trainFs, probs, trainN, sumOfWeights);
 	    Evaluation eval = new Evaluation(train);
 	    eval.evaluateModel(this, test);

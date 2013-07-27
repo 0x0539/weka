@@ -1,0 +1,5 @@
+out/
+.idea/
+weka/build
+weka/dist
+wekarate.iml

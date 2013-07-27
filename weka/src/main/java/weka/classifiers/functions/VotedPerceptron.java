@@ -22,26 +22,18 @@
 
 package weka.classifiers.functions;
 
-import java.util.Enumeration;
-import java.util.Random;
-import java.util.Vector;
-
 import weka.classifiers.AbstractClassifier;
-import weka.core.Capabilities;
+import weka.core.*;
 import weka.core.Capabilities.Capability;
-import weka.core.Instance;
-import weka.core.Instances;
-import weka.core.Option;
-import weka.core.OptionHandler;
-import weka.core.RevisionUtils;
-import weka.core.TechnicalInformation;
 import weka.core.TechnicalInformation.Field;
 import weka.core.TechnicalInformation.Type;
-import weka.core.TechnicalInformationHandler;
-import weka.core.Utils;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.NominalToBinary;
 import weka.filters.unsupervised.attribute.ReplaceMissingValues;
+
+import java.util.Enumeration;
+import java.util.Random;
+import java.util.Vector;
 
 /**
  <!-- globalinfo-start -->
@@ -331,6 +323,9 @@ public class VotedPerceptron
     m_K = 0;
   out:
     for (int it = 0; it < m_NumIterations; it++) {
+        if (Thread.interrupted()) {
+            throw new InterruptedException("Thread interrupted during training.");
+        }
       for (int i = 0; i < m_Train.numInstances(); i++) {
 	Instance inst = m_Train.instance(i);
 	if (!inst.classIsMissing()) {
